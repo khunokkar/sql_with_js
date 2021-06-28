@@ -1,47 +1,54 @@
-// database
-const db = require('./database')
+const Sequelize = require('sequelize')
 
-// Fetching data Example
-// db.execute('SELECT * FROM products').then(data => {
-//   // console.log(data)
-//   console.log(data[0])
-// }).catch(err => {
-//   console.log(err)
-// }); 
+// DB
+const sequelize = require('./database')
 
-// PRODUCT Class
-// class Product {
-//   constructor(title, price, description){
-//     this.title = title
-//     this.price = price
-//     this.description = description
-//   }
-//   save(){
-//     return db.execute('INSERT INTO products (title,price,description) VALUES (?,?,?)',
-//     [this.title, this.price, this.description]
-//     )
-//   }
-//   static fetchData(){
-//     return db.execute('SELECT * FROM products')
-//   }
-//   static fetchById(id){
-//     return db.execute('SELECT * FROM products WHERE id = ?', [id])
-//   }
-// }
+// Define a new model
+const Product = sequelize.define('product', {
+  id : {
+    type : Sequelize.INTEGER,
+    autoIncrement : true,
+    allowNull : false,
+    primaryKey : true
+  },
+  title : {
+    type : Sequelize.STRING,
+    allowNull : false
+  },
+  price : {
+    type : Sequelize.DOUBLE,
+    allowNull : false
+  },
+  description : {
+    type : Sequelize.STRING,
+    allowNull : false
+  }
+})
 
 async function main(){
-  // FETCHING DATA
-  // const [data,...FieldPacket] = await db.execute('SELECT * FROM products')
-  // const [data,...FieldPacket] = await Product.fetchData()
-  
-  // FETCH BY ID
-  // const [data,...FieldPacket] = await Product.fetchById(2)
-  // console.log(data)  
+  // create new Product
+  // await Product.create({
+  //   title : 'Laptop',
+  //   price : 10,
+  //   description : 'some description'
+  // })
 
-  // Saving Data
-  // const product = new Product('Laptop', 1200, 'Dell work station')
-  // const response = await product.save()
-  // console.log(response)
+  // find products
+  // const result = await Product.findAll()
+  // console.log(result[0])
+
+  // find a single product
+  // const result = await Product.findAll({
+  //   where: {
+  //     id: 1
+  //  }
+  // })
+  // or
+  // const result = await Product.findByPk(1)
 }
 
-main()
+// create table
+sequelize.sync().then(result => {  
+  main()
+}).catch(err => console.log(err))
+

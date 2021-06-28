@@ -2,14 +2,12 @@ require('dotenv').config()
 
 const db_pwd = process.env.DB_PWD
 
-// Set up connection to database
-const mysql = require('mysql2')
+// Set up connection to database with sql2
+const Sequelize = require('sequelize')
 
-const pool = mysql.createPool({
-  host : 'localhost',
-  user : 'root',
-  database : 'new_schema',
-  password : db_pwd
+const sequelize = new Sequelize('new_schema', 'root', db_pwd, {
+  dialect : 'mysql',
+  host : 'localhost'
 })
 
-module.exports = pool.promise()
+module.exports = sequelize
